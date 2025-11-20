@@ -143,6 +143,7 @@
         </main>
     </div>
 
+    <div id="toaster" class="toaster"></div>
 
     <script>
         (() => {
@@ -169,6 +170,7 @@
             });
         })();
     </script>
+
     @stack('customJs')
 </body>
 

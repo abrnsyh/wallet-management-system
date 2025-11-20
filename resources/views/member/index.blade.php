@@ -4,7 +4,6 @@
 
 @section('content')
     <div class="p-4">
-
         <div class="card w-full">
             <header>
                 <h2>Members</h2>
@@ -26,7 +25,7 @@
                             </button>
                         </div>
                     </form>
-                    <button class="btn">
+                    <button onclick="document.getElementById('createModal').showModal()" class="btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" class="lucide lucide-plus-icon lucide-plus">
@@ -68,5 +67,31 @@
             </section>
         </div>
     </div>
+
+    @include('member.create-modal')
+
+    @if (session('success'))
+        <div id="toaster" class="toaster">
+            <div class="toast" role="status" aria-atomic="true" aria-hidden="false" data-category="success">
+                <div class="toast-content">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+
+                    <section>
+                        <h2>Success</h2>
+                        <p>{{ session('success') }}</p>
+                    </section>
+
+                    <footer>
+                        <button type="button" class="btn-close" data-toast-action>Dismiss</button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    @endif
 
 @endsection
