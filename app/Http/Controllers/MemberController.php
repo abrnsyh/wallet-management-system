@@ -6,25 +6,19 @@ use App\Models\Member;
 use App\Http\Services\MemberService;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+use Symfony\Component\HttpFoundation\Request;
 
 class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, MemberService $memberService)
     {
-        $members = Member::paginate(10);
+        $members = $memberService->getAllMembers($request->only('search'));
         return view("member.index", compact("members"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -44,13 +38,6 @@ class MemberController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Member $member)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -60,11 +47,4 @@ class MemberController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Member $member)
-    {
-        //
-    }
 }

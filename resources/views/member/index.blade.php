@@ -42,6 +42,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Phone</th>
                                 <th>Balance</th>
                                 <th>Actions</th>
                             </tr>
@@ -51,6 +52,7 @@
                                 <tr>
                                     <td class="font-medium">{{ $member->name }}</td>
                                     <td>{{ $member->email }}</td>
+                                    <td>{{ $member->phone }}</td>
                                     <td>{{ Number::currency($member->balance, 'IDR', 'id') }}</td>
                                     <td class="text-right"></td>
                                 </tr>
@@ -62,7 +64,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{ $members->onEachSide(2)->links('components.pagination') }}
+                {{ $members->withQueryString()->onEachSide(2)->links('components.pagination') }}
 
             </section>
         </div>
