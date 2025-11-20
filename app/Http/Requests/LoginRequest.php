@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -17,8 +18,24 @@ class LoginRequest extends FormRequest
     {
         return [
             "email" => "required|email",
-            "passowrd" => "required",
+            "password" => "required",
         ];
+    }
+
+    public function ensureIsNotRateLimited()
+    {
+        // Key per email
+        $key = 'login:'.strtolower($this->email);
+
+        if (! RateLimiter::tooManyAttempts($key, 5)) {
+            return;
+        }
+
+        $seconds = RateLimiter::availableIn($key);
+
+        throw ValidationException::withMessages([
+            'email' => "Too many login attempts. Try again in {$seconds} seconds.",
+        ]);
     }
 
     public function hitRateLimit()

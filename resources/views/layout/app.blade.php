@@ -6,262 +6,162 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Member Balance - @yield('title', 'Dashboard')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
-                '(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
-
 </head>
 
-<body class="bg-neutral-primary-soft">
-    {{-- Navbar --}}
-    <nav class="fixed top-0 z-50 w-full bg-neutral-primary-soft border-b border-default">
-        <div class="px-3 py-3 lg:px-5 lg:pl-3">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center justify-start rtl:justify-end">
-                    <button data-drawer-target="top-bar-sidebar" data-drawer-toggle="top-bar-sidebar"
-                        aria-controls="top-bar-sidebar" type="button"
-                        class="sm:hidden text-heading bg-transparent box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium leading-5 rounded-base text-sm p-2 focus:outline-none">
-                        <span class="sr-only">Open sidebar</span>
-                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                d="M5 7h14M5 12h14M5 17h10" />
-                        </svg>
-                    </button>
-                    <a href="https://flowbite.com" class="flex ms-2 md:me-24">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 me-3" alt="FlowBite Logo" />
-                        <span
-                            class="self-center text-lg font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-                    </a>
+@php
+    $links = [['title' => 'dashboard', 'href' => route('dashboard')]];
+@endphp
+
+<body>
+    <aside id="sidebar" class="sidebar" data-side="left" aria-hidden="false">
+        <nav aria-label="Sidebar navigation">
+            <header>
+                <a href="{{ route('dashboard') }}" class="btn-ghost p-2 h-12 w-full justify-start">Logo</a>
+            </header>
+            <section class="scrollbar">
+                <div role="group" aria-labelledby="group-label-content-1">
+                    <h3 id="group-label-content-1">Main Feature</h3>
+                    <ul>
+                        @foreach ($links as $link)
+                            <li>
+                                <a href="{{ $link['href'] }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m7 11 2-2-2-2" />
+                                        <path d="M11 13h4" />
+                                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                                    </svg>
+                                    <span>{{ ucfirst($link['title']) }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
-                <div class="flex items-center">
-                    <button id="theme-toggle" type="button"
-                        class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+            </section>
+            <footer>
+                <div id="demo-dropdown-menu" class="dropdown-menu">
+                    <button type="button" id="demo-dropdown-menu-trigger" aria-haspopup="menu"
+                        aria-controls="demo-dropdown-menu-menu" aria-expanded="false"
+                        class="btn-outline p-2 h-12 flex items-center justify-start w-full"
+                        data-keep-mobile-sidebar-open>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-8" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-circle-user-round-icon lucide-circle-user-round">
+                            <path d="M18 20a6 6 0 0 0-12 0" />
+                            <circle cx="12" cy="10" r="4" />
+                            <circle cx="12" cy="12" r="10" />
                         </svg>
-                        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                fill-rule="evenodd" clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                    <div class="flex items-center ms-3">
-                        <div>
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                    alt="user photo">
-                            </button>
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+                            <span class="truncate font-medium">{{ ucfirst(Auth::user()->name) }}</span>
+                            <span class="truncate text-xs">{{ Auth::user()->email }}</span>
                         </div>
-                        <div class="z-50 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
-                            id="dropdown-user">
-                            <div class="px-4 py-3 border-b border-default-medium" role="none">
-                                <p class="text-sm font-medium text-heading" role="none">
-                                    Neil Sims
-                                </p>
-                                <p class="text-sm text-body truncate" role="none">
-                                    neil.sims@flowbite.com
-                                </p>
+
+                    </button>
+                    <div id="demo-dropdown-menu-popover" data-side="top" data-popover aria-hidden="true"
+                        class="w-[271px] md:w-[239px]">
+                        <div role="menu" id="demo-dropdown-menu-menu" aria-labelledby="demo-dropdown-menu-trigger">
+                            <div role="group" aria-labelledby="account-options">
+                                <div role="heading" id="account-options">My Account</div>
+                                <button form="logoutForm" type="submit" role="menuitem">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round"
+                                        class="lucide lucide-log-out-icon lucide-log-out">
+                                        <path d="m16 17 5-5-5-5" />
+                                        <path d="M21 12H9" />
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    </svg>
+                                    Logout
+                                </button>
                             </div>
-                            <ul class="p-2 text-sm text-body font-medium" role="none">
-                                <li>
-                                    <a href="#"
-                                        class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                                        role="menuitem">Dashboard</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                                        role="menuitem">Settings</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                                        role="menuitem">Earnings</a>
-                                </li>
-                                <li>
-                                    <a href="#"
-                                        class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
-                                        role="menuitem">Sign out</a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
-
                 </div>
-            </div>
-        </div>
-    </nav>
-    {{-- End of Navbar --}}
-
-    {{-- Sidebar --}}
-    <aside id="top-bar-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0"
-        aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-neutral-primary-soft border-e border-default">
-            <a href="https://flowbite.com/" class="flex items-center ps-2.5 mb-5">
-                <img src="https://flowbite.com/docs/images/logo.svg" class="h-6 me-3" alt="Flowbite Logo" />
-                <span class="self-center text-lg text-heading font-semibold whitespace-nowrap">Flowbite</span>
-            </a>
-            <ul class="space-y-2 font-medium">
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="w-5 h-5 transition duration-75 group-hover:text-fg-brand" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="M10 6.025A7.5 7.5 0 1 0 17.975 14H10V6.025Z" />
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M13.5 3c-.169 0-.334.014-.5.025V11h7.975c.011-.166.025-.331.025-.5A7.5 7.5 0 0 0 13.5 3Z" />
-                        </svg>
-                        <span class="ms-3">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M15 5v14M9 5v14M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Kanban</span>
-                        <span
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-xs font-medium px-1.5 py-0.5 rounded-sm">Pro</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 13h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H20M4 13v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M4 13l2-9h12l2 9M9 7h6m-7 3h8" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Inbox</span>
-                        <span
-                            class="inline-flex items-center justify-center w-4.5 h-4.5 ms-2 text-xs font-medium text-fg-danger-strong bg-danger-soft border border-danger-subtle rounded-full">2</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                                d="M16 19h4a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-2m-2.236-4a3 3 0 1 0 0-4M3 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Users</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M9 10V6a3 3 0 0 1 3-3v0a3 3 0 0 1 3 3v4m3-2 .917 11.923A1 1 0 0 1 17.92 21H6.08a1 1 0 0 1-.997-1.077L6 8h12Z" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Products</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#"
-                        class="flex items-center px-2 py-1.5 text-body rounded-base hover:bg-neutral-tertiary hover:text-fg-brand group">
-                        <svg class="shrink-0 w-5 h-5 transition duration-75 group-hover:text-fg-brand"
-                            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
-                        </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Sign In</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
+            </footer>
+        </nav>
     </aside>
-    {{-- End of Sidebar --}}
 
-    <div class="p-4 sm:ml-64 mt-14">
-        <div class="grid grid-cols-3 gap-4 mb-4">
-            @yield('content')
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+        @csrf
+    </form>
+
+    <div>
+        <div class="flex items-center justify-between w-full h-14 border px-4">
+            {{-- Sidebar Button --}}
+            <button type="button" aria-label="Toggle sidebar" data-tooltip="Toggle sidebar" data-side="bottom"
+                data-align="start" class="btn-sm-icon-ghost"
+                onclick="document.dispatchEvent(new CustomEvent('basecoat:sidebar'));">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-panel-left-icon lucide-panel-left">
+                    <rect width="18" height="18" x="3" y="3" rx="2" />
+                    <path d="M9 3v18" />
+                </svg>
+            </button>
+            {{-- End of Sidebar Button --}}
+
+            {{-- Right Side Button --}}
+            <button type="button" data-align="end" aria-label="Toggle dark mode" data-tooltip="Toggle dark mode"
+                data-side="bottom" onclick="document.dispatchEvent(new CustomEvent('basecoat:theme'))"
+                class="btn-icon-outline size-8">
+                <span class="hidden dark:block"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4" />
+                        <path d="M12 2v2" />
+                        <path d="M12 20v2" />
+                        <path d="m4.93 4.93 1.41 1.41" />
+                        <path d="m17.66 17.66 1.41 1.41" />
+                        <path d="M2 12h2" />
+                        <path d="M20 12h2" />
+                        <path d="m6.34 17.66-1.41 1.41" />
+                        <path d="m19.07 4.93-1.41 1.41" />
+                    </svg></span>
+                <span class="block dark:hidden"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                    </svg></span>
+            </button>
+            {{-- End of Right Side Button --}}
+
         </div>
+
+
+        <main>
+            @yield('content')
+        </main>
     </div>
 
 
-
-
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
-
     <script>
-        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
-
-        // Change the icons inside the button based on previous settings
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
-                '(prefers-color-scheme: dark)').matches)) {
-            themeToggleLightIcon.classList.remove('hidden');
-        } else {
-            themeToggleDarkIcon.classList.remove('hidden');
-        }
-
-        const themeToggleBtn = document.getElementById('theme-toggle');
-
-        themeToggleBtn.addEventListener('click', function() {
-
-            // toggle icons inside button
-            themeToggleDarkIcon.classList.toggle('hidden');
-            themeToggleLightIcon.classList.toggle('hidden');
-
-            // if set via local storage previously
-            if (localStorage.getItem('color-theme')) {
-                if (localStorage.getItem('color-theme') === 'light') {
+        (() => {
+            try {
+                const stored = localStorage.getItem('themeMode');
+                if (stored ? stored === 'dark' :
+                    matchMedia('(prefers-color-scheme: dark)').matches) {
                     document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
                 }
+            } catch (_) {}
 
-                // if NOT set via local storage previously
-            } else {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    localStorage.setItem('color-theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    localStorage.setItem('color-theme', 'dark');
-                }
-            }
+            const apply = dark => {
+                document.documentElement.classList.toggle('dark', dark);
+                try {
+                    localStorage.setItem('themeMode', dark ? 'dark' : 'light');
+                } catch (_) {}
+            };
 
-        });
+            document.addEventListener('basecoat:theme', (event) => {
+                const mode = event.detail?.mode;
+                apply(mode === 'dark' ? true :
+                    mode === 'light' ? false :
+                    !document.documentElement.classList.contains('dark'));
+            });
+        })();
     </script>
-
     @stack('customJs')
-
 </body>
 
 </html>
