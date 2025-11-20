@@ -16,7 +16,9 @@ class MemberService
                 ->orWhere('phone', 'like', '%'.$filters['search'].'%');
         }
 
-        return $query->paginate(10);
+        return $query
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
     }
     /**
      * Create a new member with initial balance 0.
