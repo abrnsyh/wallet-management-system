@@ -92,7 +92,7 @@
 
 
     <div>
-        <div class="flex items-center justify-between w-full h-14 border px-4">
+        <div class="flex items-center justify-between sticky top-0 bg-background w-full h-14 border px-4">
             {{-- Sidebar Button --}}
             <button type="button" aria-label="Toggle sidebar" data-tooltip="Toggle sidebar" data-side="bottom"
                 data-align="start" class="btn-sm-icon-ghost"

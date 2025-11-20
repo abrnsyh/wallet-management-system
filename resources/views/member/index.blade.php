@@ -63,6 +63,7 @@
                         </tbody>
                     </table>
                 </div>
+                {{ $members->onEachSide(2)->links('components.pagination') }}
 
             </section>
         </div>

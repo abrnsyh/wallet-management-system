@@ -15,5 +15,5 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+    Route::resource('members', MemberController::class)->except(['create', 'edit']);
 });
