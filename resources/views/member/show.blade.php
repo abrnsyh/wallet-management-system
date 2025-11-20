@@ -33,7 +33,7 @@
                 </div>
             </section>
             <footer class="gap-4">
-                <button class="btn">
+                <button class="btn" onclick="document.getElementById('topupModal').showModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up">
@@ -45,7 +45,8 @@
                         <circle cx="12" cy="12" r="2" />
                     </svg>
                     Top Up</button>
-                <button class="btn-destructive">
+
+                <button {{ $member->balance > 0 ? '' : 'disabled' }} class="btn-destructive">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         class="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down">
@@ -104,4 +105,58 @@
             </section>
         </div>
     </div>
+
+    @if (session('success'))
+        <div id="toaster" class="toaster">
+            <div class="toast" role="status" aria-atomic="true" aria-hidden="false" data-category="success">
+                <div class="toast-content">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+
+                    <section>
+                        <h2>Success</h2>
+                        <p>{{ session('success') }}</p>
+                    </section>
+
+                    <footer>
+                        <button type="button" class="btn-close" data-toast-action>Dismiss</button>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($errors->any())
+
+        @foreach ($errors->all() as $error)
+            <div id="toaster" class="toaster">
+                <div class="toast" role="status" aria-atomic="true" aria-hidden="false" data-category="success">
+                    <div class="toast-content">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+
+                        <section>
+                            <h2>Failed</h2>
+                            <p>{{ ucfirst($error) }}</p>
+                        </section>
+
+                        <footer>
+                            <button type="button" class="btn-close" data-toast-action>Dismiss</button>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endif
+
+
+    @include('member.topup-modal')
 @endsection

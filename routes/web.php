@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,4 +17,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('members', MemberController::class)->except(['create', 'edit']);
+
+    Route::post('/members/{member}/topup', [TransactionController::class, 'topup'])
+        ->name('members.topup');
+
+    // Route::post('/members/{member}/deduct', [TransactionController::class, 'deduct'])
+//     ->name('members.deduct');
 });

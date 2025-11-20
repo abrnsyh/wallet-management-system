@@ -4,16 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransactionRequest extends FormRequest
+class StoreTopupRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +14,8 @@ class StoreTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'amount' => 'integer|required|min:1000',
+            'description' => 'string|required|min:6'
         ];
     }
 }
