@@ -9,7 +9,20 @@
 </head>
 
 @php
-    $links = [['title' => 'dashboard', 'href' => route('dashboard')]];
+    $links = [
+        [
+            'title' => 'dashboard',
+            'href' => route('dashboard'),
+            'icon' =>
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-gauge-icon lucide-circle-gauge"><path d="M15.6 2.7a10 10 0 1 0 5.7 5.7"/><circle cx="12" cy="12" r="2"/><path d="M13.4 10.6 19 5"/></svg>',
+        ],
+        [
+            'title' => 'members',
+            'href' => route('members.index'),
+            'icon' =>
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>',
+        ],
+    ];
 @endphp
 
 <body>
@@ -25,13 +38,7 @@
                         @foreach ($links as $link)
                             <li>
                                 <a href="{{ $link['href'] }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="m7 11 2-2-2-2" />
-                                        <path d="M11 13h4" />
-                                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                                    </svg>
+                                    {!! $link['icon'] !!}
                                     <span>{{ ucfirst($link['title']) }}</span>
                                 </a>
                             </li>
@@ -63,7 +70,7 @@
                         class="w-[271px] md:w-[239px]">
                         <div role="menu" id="demo-dropdown-menu-menu" aria-labelledby="demo-dropdown-menu-trigger">
                             <div role="group" aria-labelledby="account-options">
-                                <div role="heading" id="account-options">My Account</div>
+                                <div role="heading" id="account-options">Actions</div>
                                 <button form="logoutForm" type="submit" role="menuitem">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -83,9 +90,6 @@
         </nav>
     </aside>
 
-    <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-        @csrf
-    </form>
 
     <div>
         <div class="flex items-center justify-between w-full h-14 border px-4">
@@ -106,8 +110,8 @@
             <button type="button" data-align="end" aria-label="Toggle dark mode" data-tooltip="Toggle dark mode"
                 data-side="bottom" onclick="document.dispatchEvent(new CustomEvent('basecoat:theme'))"
                 class="btn-icon-outline size-8">
-                <span class="hidden dark:block"><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                <span class="hidden dark:block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="4" />
                         <path d="M12 2v2" />
@@ -129,6 +133,10 @@
 
         </div>
 
+        {{-- Form for Logout --}}
+        <form class="hidden" id="logoutForm" action="{{ route('logout') }}" method="POST">
+            @csrf
+        </form>
 
         <main>
             @yield('content')

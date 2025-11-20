@@ -12,7 +12,7 @@
 
 <body>
     <div class="conatiner w-full flex justify-center items-center h-screen">
-        <div class="card w-lg">
+        <div class="card w-md">
             <header>
                 <h2>Login to your account</h2>
                 <p>Enter your details below to login to your account</p>
