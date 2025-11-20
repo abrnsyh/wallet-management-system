@@ -21,6 +21,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/members/{member}/topup', [TransactionController::class, 'topup'])
         ->name('members.topup');
 
-    // Route::post('/members/{member}/deduct', [TransactionController::class, 'deduct'])
-//     ->name('members.deduct');
+    Route::post('/members/{member}/deduct', [TransactionController::class, 'deduct'])
+        ->name('members.deduct');
 });

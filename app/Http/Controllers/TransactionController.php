@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDeductRequest;
 use App\Http\Requests\StoreTopupRequest;
 use App\Http\Services\TransactionService;
 use App\Models\Transaction;
@@ -25,15 +26,15 @@ class TransactionController extends Controller
         return back()->with('success', 'Saldo berhasil ditambahkan.');
     }
 
-    // public function deduct(Member $member, StoreDeductRequest $request, TransactionService $service)
-    // {
-    //     try {
-    //         $service->deduct($member, $request->validated()['amount'], $request->description);
-    //     } catch (\Exception $e) {
-    //         return back()->with('error', $e->getMessage());
-    //     }
+    public function deduct(Member $member, StoreDeductRequest $request, TransactionService $service)
+    {
+        try {
+            $service->deduct($member, $request->validated()['amount'], $request->description);
+        } catch (\Exception $e) {
+            return back()->withErrors($e->getMessage());
+        }
 
-    //     return back()->with('success', 'Saldo berhasil dikurangi.');
-    // }
+        return back()->with('success', 'Saldo berhasil dikurangi.');
+    }
 
 }

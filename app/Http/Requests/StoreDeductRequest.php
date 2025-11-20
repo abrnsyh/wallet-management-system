@@ -4,8 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTopupRequest extends FormRequest
+class StoreDeductRequest extends FormRequest
 {
+
+
     /**
      * Get the validation rules that apply to the request.
      *

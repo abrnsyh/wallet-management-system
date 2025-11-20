@@ -17,10 +17,8 @@ class TransactionService
     {
         return DB::transaction(function () use ($member, $amount, $description) {
 
-            // Update saldo (atomic)
             $member->increment('balance', $amount);
 
-            // Buat transaksi ledger
             $transaction = Transaction::create([
                 'member_id' => $member->id,
                 'type' => 'topup',
@@ -28,7 +26,6 @@ class TransactionService
                 'description' => $description,
             ]);
 
-            // Log ke Redis (opsional)
             Redis::lpush("member:{$member->id}:logs", json_encode([
                 'action' => 'topup',
                 'amount' => $amount,
@@ -47,23 +44,19 @@ class TransactionService
     {
         return DB::transaction(function () use ($member, $amount, $description) {
 
-            // Cek saldo cukup
             if ($member->balance < $amount) {
-                throw new Exception("Saldo tidak mencukupi untuk melakukan deduct.");
+                throw new Exception("Balance is not sufficient.");
             }
 
-            // Kurangi saldo
             $member->decrement('balance', $amount);
 
-            // Buat ledger transaksi
             $transaction = Transaction::create([
                 'member_id' => $member->id,
-                'type' => 'deduct',
+                'type' => 'deduction',
                 'amount' => $amount,
                 'description' => $description,
             ]);
 
-            // Log Redis
             Redis::lpush("member:{$member->id}:logs", json_encode([
                 'action' => 'deduct',
                 'amount' => $amount,
