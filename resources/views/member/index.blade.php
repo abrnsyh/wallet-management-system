@@ -94,4 +94,13 @@
         </div>
     @endif
 
+    @push('customJs')
+
+        @if ($errors->any())
+            <script>
+                document.getElementById('createModal').showModal()
+            </script>
+        @endif
+    @endpush
+
 @endsection

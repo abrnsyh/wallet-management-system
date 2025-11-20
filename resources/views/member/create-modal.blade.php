@@ -20,7 +20,7 @@
                 </div>
                 <div class="grid gap-3">
                     <label for="demo-dialog-edit-profile-username">Phone</label>
-                    <input type="text" x-mask="(999)999-999-999" placeholder="(081)234-567-890"
+                    <input type="text" x-mask="9999-9999-9999" placeholder="(081)234-567-890"
                         value="{{ old('phone') }}" name="phone" id="demo-dialog-edit-profile-username" required />
                 </div>
 
