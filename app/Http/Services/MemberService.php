@@ -20,7 +20,6 @@ class MemberService
             'balance' => 0,
         ]));
 
-        // Log untuk member tersebut
         Redis::lpush("member:{$member->id}:logs", json_encode([
             'action' => 'create_member',
             'name' => $member->name,
@@ -31,14 +30,6 @@ class MemberService
             'time' => now()->toDateTimeString(),
         ]));
 
-        // Log global sistem (optional tapi keren)
-        Redis::lpush("system:logs", json_encode([
-            'action' => 'create_member',
-            'member_id' => $member->id,
-            'name' => $member->name,
-            'by' => Auth::user()?->email ?? 'system',
-            'time' => now()->toDateTimeString(),
-        ]));
 
         return $member;
     }

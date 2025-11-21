@@ -59,6 +59,10 @@
                         <circle cx="12" cy="12" r="2" />
                     </svg>
                     Deduction</button>
+
+                <a class="btn-outline" href="{{ route('members.logs', $member->id) }}">
+                    View Activity Logs
+                </a>
             </footer>
         </div>
 

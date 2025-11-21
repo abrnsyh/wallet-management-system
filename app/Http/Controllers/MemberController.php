@@ -7,6 +7,7 @@ use App\Http\Services\MemberService;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpFoundation\Request;
 
 class MemberController extends Controller
@@ -65,6 +66,14 @@ class MemberController extends Controller
             ->withQueryString(); // penting!
 
         return view('member.show', compact('member', 'transactions'));
+    }
+
+    public function logIndex(Member $member)
+    {
+        $logs = collect(Redis::lrange("member:{$member->id}:logs", 0, 50))
+            ->map(fn ($item) => json_decode($item, true));
+
+        return view('member.logs', compact('member', 'logs'));
     }
 
 
