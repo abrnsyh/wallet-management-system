@@ -13,7 +13,7 @@
                 <div class="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
                     <form method="GET" action="{{ route('members.index') }}">
                         <div class="flex items-center space-x-2">
-                            <input class="input" name="search" value="{{ old('search') }}" type="text"
+                            <input class="input" name="search" value="{{ request('search') }}" type="text"
                                 placeholder="search...">
                             <button type="submit" class="btn-icon-outline">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -23,6 +23,12 @@
                                     <circle cx="11" cy="11" r="8" />
                                 </svg>
                             </button>
+
+                            @if (request()->has('search'))
+                                <a href="{{ route('members.index') }}" class="btn-secondary h-[42px]">
+                                    Reset
+                                </a>
+                            @endif
                         </div>
                     </form>
                     <button onclick="document.getElementById('createModal').showModal()" class="btn">
@@ -75,7 +81,7 @@
                         </tbody>
                     </table>
                 </div>
-                {{ $members->withQueryString()->onEachSide(2)->links('components.pagination') }}
+                {{ $members->onEachSide(2)->links('components.pagination') }}
 
             </section>
         </div>

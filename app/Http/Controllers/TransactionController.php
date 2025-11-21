@@ -20,10 +20,10 @@ class TransactionController extends Controller
             $service->topup($member, $request->validated()['amount'], $request->description);
         } catch (\Exception $e) {
             dd(''.$e->getMessage());
-            return back()->with('error', $e->getMessage());
+            return back()->withErrors($e->getMessage());
         }
 
-        return back()->with('success', 'Saldo berhasil ditambahkan.');
+        return back()->with('success', 'Top Up Success.');
     }
 
     public function deduct(Member $member, StoreDeductRequest $request, TransactionService $service)
@@ -34,7 +34,7 @@ class TransactionController extends Controller
             return back()->withErrors($e->getMessage());
         }
 
-        return back()->with('success', 'Saldo berhasil dikurangi.');
+        return back()->with('success', 'Deduction Success.');
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Models\Member;
 use App\Models\Transaction;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
@@ -17,7 +18,14 @@ class TransactionService
     {
         return DB::transaction(function () use ($member, $amount, $description) {
 
-            $member->increment('balance', $amount);
+            $lockedMember = Member::where('id', $member->id)
+                ->lockForUpdate()
+                ->first();
+
+            $oldBalance = $lockedMember->balance;
+            $newBalance = $oldBalance + $amount;
+
+            $lockedMember->increment('balance', $amount);
 
             $transaction = Transaction::create([
                 'member_id' => $member->id,
@@ -29,10 +37,16 @@ class TransactionService
             Redis::lpush("member:{$member->id}:logs", json_encode([
                 'action' => 'topup',
                 'amount' => $amount,
+                'old_balance' => $oldBalance,
+                'new_balance' => $newBalance,
+                'description' => $description,
+                'transaction_id' => $transaction->id,
+                'by' => Auth::user()?->email ?? 'system',
                 'time' => now()->toDateTimeString(),
             ]));
 
             return $transaction;
+
         });
     }
 
@@ -44,11 +58,18 @@ class TransactionService
     {
         return DB::transaction(function () use ($member, $amount, $description) {
 
-            if ($member->balance < $amount) {
+            $lockedMember = Member::where('id', $member->id)
+                ->lockForUpdate()
+                ->first();
+
+            if ($lockedMember->balance < $amount) {
                 throw new Exception("Balance is not sufficient.");
             }
 
-            $member->decrement('balance', $amount);
+            $oldBalance = $lockedMember->balance;
+            $newBalance = $oldBalance - $amount;
+
+            $lockedMember->decrement('balance', $amount);
 
             $transaction = Transaction::create([
                 'member_id' => $member->id,
@@ -58,12 +79,18 @@ class TransactionService
             ]);
 
             Redis::lpush("member:{$member->id}:logs", json_encode([
-                'action' => 'deduct',
+                'action' => 'deduction',
                 'amount' => $amount,
+                'old_balance' => $oldBalance,
+                'new_balance' => $newBalance,
+                'description' => $description,
+                'transaction_id' => $transaction->id,
+                'by' => Auth::user()?->email ?? 'system',
                 'time' => now()->toDateTimeString(),
             ]));
 
             return $transaction;
+
         });
     }
 }

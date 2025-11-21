@@ -14,11 +14,28 @@ class MemberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, MemberService $memberService)
+    public function index(Request $request)
     {
-        $members = $memberService->getAllMembers($request->only('search'));
-        return view("member.index", compact("members"));
+        $members = Member::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $members->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        $members = $members
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10)
+            ->withQueryString(); // penting kalau mau pagination tetap bawa search
+
+        return view('member.index', compact('members'));
     }
+
 
 
     /**
@@ -36,9 +53,16 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
-        $transactions = Transaction::where('member_id', $member->id)
+        $transactions = $member->transactions()
+            ->when(request('type'), function ($q) {
+                $q->where('type', request('type'));
+            })
+            ->when(request('date'), function ($q) {
+                $q->whereDate('created_at', request('date'));
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString(); // penting!
 
         return view('member.show', compact('member', 'transactions'));
     }

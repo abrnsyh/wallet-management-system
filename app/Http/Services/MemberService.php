@@ -3,23 +3,11 @@
 namespace App\Http\Services;
 
 use App\Models\Member;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class MemberService
 {
-    public function getAllMembers(array $filters = [])
-    {
-        $query = Member::query();
-
-        if (! empty($filters['search'])) {
-            $query->where('name', 'like', '%'.$filters['search'].'%')
-                ->orWhere('email', 'like', '%'.$filters['search'].'%')
-                ->orWhere('phone', 'like', '%'.$filters['search'].'%');
-        }
-
-        return $query
-            ->orderBy('updated_at', 'desc')
-            ->paginate(10);
-    }
     /**
      * Create a new member with initial balance 0.
      *
@@ -28,6 +16,30 @@ class MemberService
      */
     public function createMember(array $data): Member
     {
-        return Member::create(array_merge($data, ['balance' => 0]));
+        $member = Member::create(array_merge($data, [
+            'balance' => 0,
+        ]));
+
+        // Log untuk member tersebut
+        Redis::lpush("member:{$member->id}:logs", json_encode([
+            'action' => 'create_member',
+            'name' => $member->name,
+            'email' => $member->email,
+            'phone' => $member->phone,
+            'initial_balance' => 0,
+            'by' => Auth::user()?->email ?? 'system',
+            'time' => now()->toDateTimeString(),
+        ]));
+
+        // Log global sistem (optional tapi keren)
+        Redis::lpush("system:logs", json_encode([
+            'action' => 'create_member',
+            'member_id' => $member->id,
+            'name' => $member->name,
+            'by' => Auth::user()?->email ?? 'system',
+            'time' => now()->toDateTimeString(),
+        ]));
+
+        return $member;
     }
 }
