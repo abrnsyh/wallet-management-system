@@ -1,6 +1,6 @@
 # Member Balance App
 
-Project dibuat berdasarkan requirement tes teknis Fullstack Developer — Laravel + MySQL (MariaDB) dengan nilai tambah integrasi Redis untuk log/riwayat transaksi.
+Project dibuat berdasarkan requirement tes teknis Fullstack Developer — Laravel + MySQL (MariaDB).
 
 ---
 
@@ -32,7 +32,7 @@ Project dibuat berdasarkan requirement tes teknis Fullstack Developer — Larave
     -   `TransactionService` untuk business logic saldo
     -   `MemberService` untuk manajemen member
 
-### 🔥 Bonus Features (Nilai Tambah)
+### 🔥 Bonus Features
 
 -   **Modern UI**
     -   Basecoat UI + Tailwind CSS
