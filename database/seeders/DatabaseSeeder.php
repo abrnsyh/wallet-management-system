@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
             "password" => bcrypt("password"),
         ]);
 
-        $this->call([
-            MemberSeeder::class
-        ]);
+        // uncomment this if you need to seed the database (for testing purpose)
+        // $this->call([
+        //     MemberSeeder::class
+        // ]);
     }
 }
