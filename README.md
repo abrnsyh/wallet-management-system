@@ -243,5 +243,6 @@ php artisan serve
 
 -   Project ini dibuat sebagai implementasi dari studi kasus PDF.
 -   Redis dipakai sebagai **nilai tambah**, bukan pengganti database utama.
+-   Lebih baik jalankan test terlebih dahulu dengan menjalankan `php artisan test`
 
 ---
