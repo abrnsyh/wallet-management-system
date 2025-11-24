@@ -29,10 +29,12 @@
                         @enderror
                     </div>
                     <div class="grid gap-2">
-                        <div class="flex items-center gap-2">
-                            <label for="demo-card-form-password">Password</label>
-                        </div>
+                        <label for="demo-card-form-password">Password</label>
                         <input name="password" type="password" id="demo-card-form-password">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember" class="font-normal">Remember Me</label>
                     </div>
                 </form>
             </section>

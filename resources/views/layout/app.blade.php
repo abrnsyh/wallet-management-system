@@ -29,7 +29,9 @@
     <aside id="sidebar" class="sidebar" data-side="left" aria-hidden="false">
         <nav aria-label="Sidebar navigation">
             <header>
-                <a href="{{ route('dashboard') }}" class="btn-ghost p-2 h-12 w-full justify-start">Logo</a>
+                <a href="{{ route('dashboard') }}" class="btn-ghost p-2 h-12 w-full justify-start">
+                    Wallet Management
+                </a>
             </header>
             <section class="scrollbar">
                 <div role="group" aria-labelledby="group-label-content-1">

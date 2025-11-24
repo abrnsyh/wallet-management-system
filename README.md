@@ -1,6 +1,6 @@
 # Member Balance App
 
-Project dibuat berdasarkan requirement tes teknis Fullstack Developer — Laravel + MySQL (MariaDB).
+Project dibuat berdasarkan requirement tes teknis Fullstack Developer untuk **PT. Buana Media Teknologi**.
 
 ---
 
@@ -180,6 +180,8 @@ Seeder akan membuat 1 akun admin:
 | **admin@mail.com** | **password** |
 
 Gunakan akun ini untuk login ke dashboard.
+
+-   Note: email dan password dapat di rubah pada database/seeders/DatabaseSeeder.php
 
 ### 6. Run vite & server
 

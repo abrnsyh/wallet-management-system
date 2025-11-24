@@ -190,4 +190,12 @@
 
     @include('member.topup-modal')
     @include('member.deduction-modal')
+
+    @push('customJs')
+        <script>
+            function formatRupiah(value) {
+                return new Intl.NumberFormat('id-ID').format(value);
+            }
+        </script>
+    @endpush
 @endsection

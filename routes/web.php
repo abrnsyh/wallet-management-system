@@ -6,6 +6,9 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
+Route::get("/", function () {
+    return redirect("/dashboard");
+});
 
 // Auth
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
