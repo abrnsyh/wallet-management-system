@@ -24,7 +24,6 @@ class LoginRequest extends FormRequest
 
     public function ensureIsNotRateLimited()
     {
-        // Key per email
         $key = 'login:'.strtolower($this->email);
 
         if (! RateLimiter::tooManyAttempts($key, 5)) {
