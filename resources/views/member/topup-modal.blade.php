@@ -9,9 +9,7 @@
             <form id="topupForm" class="form grid gap-4" method="POST" action="{{ route('members.topup', $member->id) }}">
                 @csrf
                 <div class="grid gap-3">
-                    <label for="demo-dialog-edit-profile-name">Amount</label>
-                    <input type="text" placeholder="Jane Doe" value="{{ old('amount') }}" name="amount"
-                        id="demo-dialog-edit-profile-name" autofocus required />
+                    <x-currency-input name="amount" label="Amount" />
                 </div>
                 <div class="grid gap-3">
                     <label for="demo-dialog-edit-profile-email">Desc</label>
